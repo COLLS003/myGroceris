@@ -13,7 +13,7 @@ object Main {
  import slick.jdbc.PostgresProfile.api._
  import PrivateExecutionContext._
 
- val tomatoes = Products(1, "Tomato", 200, 1, "mytomatoimage.com")
+ val tomatoes = Products(2, "Onions", 100, 1, "onion.com")
 
  def insertProduct(): Unit = {
   val queryResponse = SlickTables.productTable += tomatoes
