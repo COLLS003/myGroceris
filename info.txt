@@ -1,0 +1,4 @@
+./db
+init-script.sql contains files that will be run atuomatically by the container when the docker container spins up
+
+./compose.yml, this will continse the docker postgress image configuaration
