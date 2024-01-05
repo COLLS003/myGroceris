@@ -14,29 +14,23 @@ create table if not exists groceries."User" (
     "status" VARCHAR NOT NULL
 );
 
--- Products table
-create table if not exists groceries."Products" (
+-- flight table
+CREATE TABLE IF NOT EXISTS groceries."Flights" (
     "id" BIGSERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR NOT NULL,
-    "price" FLOAT NOT NULL,
-    "category" INTEGER NOT NULL,
-    "imageUrl" VARCHAR NOT NULL
+    "origin" VARCHAR NOT NULL,
+    "destination" VARCHAR NOT NULL,
+    "capacity" INTEGER NOT NULL,
+    "pilot" VARCHAR NOT NULL,
+    "departure" VARCHAR NOT NULL,
+    "arrival" VARCHAR NOT NULL
 );
 
--- OrderItems table
-create table if not exists groceries."OrderItems" (
+--- Bookings table
+CREATE TABLE IF NOT EXISTS groceries."Bookings" (
     "id" BIGSERIAL NOT NULL PRIMARY KEY,
-    "productID" INTEGER NOT NULL,
-    "quantity" FLOAT NOT NULL,
-    "subtotal" FLOAT NOT NULL,
-    "orderID" INTEGER NOT NULL
-);
-
--- Orders table
-create table if not exists groceries."Orders" (
-    "id" BIGSERIAL NOT NULL PRIMARY KEY,
-    "dataCreated" DATE NOT NULL,
-    "status" VARCHAR NOT NULL,
-    "total" FLOAT NOT NULL,
-    "userID" INTEGER NOT NULL
+    "flight_id" BIGINT NOT NULL,
+    "user_id" BIGINT NOT NULL,
+    FOREIGN KEY ("flight_id") REFERENCES groceries."Flights"("id"),
+    FOREIGN KEY ("user_id") REFERENCES groceries."User"("id")
 );
