@@ -19,7 +19,7 @@ object  SlickTables{//all our table will come to this point..
   import slick.jdbc.PostgresProfile.api._
 //  schema name is products and the table name from the databas will be products
 
-  class BookingsTable(tag: Tag) extends  Table[Bookings](tag, Some("Groceries"), "bookings"){
+  class BookingsTable(tag: Tag) extends  Table[Bookings](tag, Some("groceries"), "Bookings"){
     def id = column[Long]("id")
     def userId = column[Long]("user_id")
     def flightId = column[Long]("flight_id")
@@ -29,7 +29,7 @@ object  SlickTables{//all our table will come to this point..
 
   /**
    * 1. with the class created above product table slick will know how to map the actualdatabase table to the movie class
-   * 2. the Table type is from slick and it is typed genetically to product.
+   * 2. the Table type is from slick and it is typed genetically to prosduct.
    * 3. Table moivie has some contrustor tags, a. tag, 2 schema name, 3, actual tabel name.
    * 4. the overiden method willl map the products table to the product class
    *

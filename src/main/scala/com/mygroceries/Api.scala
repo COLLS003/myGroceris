@@ -7,7 +7,8 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.mygroceries.Queries.{createFlight, createUser, listFlights, loginUser, readAllUsers}
+import com.mygroceries.Marshalls.bookingsFormatter
+import com.mygroceries.Queries.{createBooking, createFlight, createUser, listBookings, listFlights, loginUser, readAllUsers}
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
 
@@ -82,27 +83,20 @@ object Api {
     post{
      pathPrefix("flight" / "create"){
       entity(as[Flights]){ flightRequest=>{
-       //use val to avoid side effects
        val createFlightResponse: Future[Int] = createFlight(flightRequest)
        onComplete(createFlightResponse){
         case Success(flightId)  => complete(StatusCodes.Created, flightRequest)
         case Failure(exception) => complete(StatusCodes.InternalServerError, exception)
-
-
        }
-
       }
-
       }
-
      }
-
     },
     //list All flights
     get{
      pathPrefix("flight" / "list"){
       //define a variable to hold all the flight from the previously created function
-      val allFlights: Future[Seq[Flights]] = listFlights()
+      val allFlights: Future[Option[Flights]] = listFlights()
       onComplete(allFlights){
        case Success(flights) => complete(StatusCodes.OK, flights)
        case Failure(exception) => complete(StatusCodes.NotFound)
@@ -110,6 +104,30 @@ object Api {
 
      }
 
+    },
+    //bookings endpoint
+    //create a bokings
+    post{
+     path("bookings" /"create"){
+      entity(as[Bookings]){ bookingsRequest =>{
+       val createBookingResponse = createBooking(bookingsRequest)
+       onComplete(createBookingResponse){
+        case Success(bookingID) => complete(StatusCodes.Created, "booking created successfully")
+        case Failure(exception) => complete(StatusCodes.NotFound, exception)
+
+       }
+      }
+      }
+     }
+    },
+    get{
+     path("bookings" / "list"){
+      val allBookings: Future[Option[Bookings]] = listBookings()
+      onComplete(allBookings){
+       case Success(bookings) => complete(StatusCodes.OK, bookings)
+       case Failure(error) => complete(StatusCodes.InternalServerError, error)
+      }
+     }
     }
    )
 

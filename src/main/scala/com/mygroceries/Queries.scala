@@ -104,7 +104,7 @@ object Queries{
 
   def createFlight(flight: Flights): Future[Int] = {
     val createFlightQuery = SlickTables.flightsTable += flight
-    var queryResponse = Connection.database.run(createFlightQuery)
+    val queryResponse = Connection.database.run(createFlightQuery)
     queryResponse.map{ flightID =>
       println(s"Flight created successfuly ${flightID}")
       flightID
@@ -112,10 +112,31 @@ object Queries{
   }
 
   //list flight
-  def listFlights(): Future[Seq[Flights]] = {
+  def listFlights(): Future[Option[Flights]] = {
     val listFlightQuery = SlickTables.flightsTable.result
-    Connection.database.run(listFlightQuery)
+    val queryResponse = Connection.database.run(listFlightQuery)
+    val futureResponse = queryResponse.map{
+      case flightData if flightData.nonEmpty  => Some(flightData.head)
+      case _ => None
+    }
+    futureResponse
 
+  }
+  //bookings
+  def createBooking(newBooking: Bookings): Future[Int] = {
+    val createBookingsQuery = SlickTables.bookingTable += newBooking
+    val createBookingsResposen = Connection.database.run(createBookingsQuery)
+    createBookingsResposen.map{ bookingID => bookingID }
+  }
+
+  def listBookings(): Future[Option[Bookings]] = {
+    val allBookings = SlickTables.bookingTable.result
+    val queryRespone = Connection.database.run(allBookings)
+    val futureResponse = queryRespone.map{
+      case bookingSeq if bookingSeq.nonEmpty => Some(bookingSeq.head)
+      case _ => None
+    }
+    futureResponse
   }
 
 }

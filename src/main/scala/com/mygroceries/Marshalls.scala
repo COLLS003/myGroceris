@@ -6,9 +6,10 @@ import spray.json.RootJsonFormat
 object  Marshalls {
 
 
-  //formateres
+  //formatters
 
 
   implicit  val flightFormatter: RootJsonFormat[Flights] = jsonFormat8(Flights)
+  implicit val bookingsFormatter: RootJsonFormat[Bookings] = jsonFormat3(Bookings)
 
 }
